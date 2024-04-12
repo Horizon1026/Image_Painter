@@ -15,11 +15,22 @@ if ( NOT TARGET lib_slam_utility_log )
     add_subdirectory( ${SLAM_UTILITY_PATH}/log ${PROJECT_SOURCE_DIR}/build/lib_slam_utility_log )
 endif()
 
+# Add dependence for painter.
+if ( NOT TARGET lib_assic_fonts )
+    add_subdirectory( fonts ${PROJECT_SOURCE_DIR}/build/lib_assic_fonts )
+endif()
+
+# Create library.
 add_library( lib_image_painter ${AUX_SRC_IMAGE_PAINTER} )
-target_include_directories( lib_image_painter PUBLIC . )
+target_include_directories( lib_image_painter PUBLIC
+    .
+    fonts
+)
 target_link_libraries( lib_image_painter
     lib_slam_utility_datatype
     lib_slam_utility_operate
     lib_slam_utility_math
     lib_slam_utility_log
+
+    lib_assic_fonts
 )

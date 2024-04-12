@@ -17,10 +17,6 @@ set( VISUALIZOR_PATH ${PROJECT_SOURCE_DIR}/../Visualizor2D )
 if ( NOT TARGET lib_image_visualizor )
     add_subdirectory( ${VISUALIZOR_PATH}/src ${PROJECT_SOURCE_DIR}/build/lib_image_visualizor )
 endif()
-set( VISUALIZOR_PATH ${PROJECT_SOURCE_DIR}/../Visualizor3D )
-if ( NOT TARGET lib_3d_visualizor )
-    add_subdirectory( ${VISUALIZOR_PATH}/src ${PROJECT_SOURCE_DIR}/build/lib_3d_visualizor )
-endif()
 
 # Create executable target to test image painter.
 add_executable( test_image_painter
