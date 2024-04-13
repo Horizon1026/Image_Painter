@@ -160,6 +160,52 @@ void ImagePainter::DrawHollowCircle(ImageType &image, int32_t center_x, int32_t 
     }
 }
 
+template void ImagePainter::DrawMidBresenhamEllipse<GrayImage, uint8_t>(GrayImage &image, int32_t center_x, int32_t center_y, int32_t radius_x, int32_t radius_y, const uint8_t &color);
+template void ImagePainter::DrawMidBresenhamEllipse<RgbImage, RgbPixel>(RgbImage &image, int32_t center_x, int32_t center_y, int32_t radius_x, int32_t radius_y, const RgbPixel &color);
+template <typename ImageType, typename PixelType>
+void ImagePainter::DrawMidBresenhamEllipse(ImageType &image, int32_t center_x, int32_t center_y, int32_t radius_x, int32_t radius_y, const PixelType &color) {
+    int32_t y = 0;
+    int32_t x = radius_x;
+    const auto &a = radius_y;
+    const auto &b = radius_x;
+    image.SetPixelValue(center_y + y, center_x + x, color);
+    image.SetPixelValue(center_y - y, center_x - x, color);
+    image.SetPixelValue(center_y - y, center_x + x, color);
+    image.SetPixelValue(center_y + y, center_x - x, color);
+
+    float d1 = b * b + a * a * (0.5f - b);
+    while (b * b * (y + 1) < a * a * (x - 0.5f)) {
+        if (d1 <= 0) {
+            d1 += b * b * (2 * y + 3);
+            ++y;
+        } else {
+            d1 += b * b * (2 * y + 3) + a * a * (2 - 2 * x);
+            ++y;
+            --x;
+        }
+        image.SetPixelValue(center_y + y, center_x + x, color);
+        image.SetPixelValue(center_y - y, center_x - x, color);
+        image.SetPixelValue(center_y - y, center_x + x, color);
+        image.SetPixelValue(center_y + y, center_x - x, color);
+    }
+
+    float d2 = b * b * (y + 0.5f) * (y + 0.5f) + a * a * (x - 1) * (x - 1) - a * a * b * b;
+    while (x > 0) {
+        if (d2 <= 0) {
+            d2 += b * b * (2 * y + 2) + a * a * (3 - 2 * x);
+            ++y;
+            --x;
+        } else {
+            d2 += a * a * (3 - 2 * x);
+            --x;
+        }
+        image.SetPixelValue(center_y + y, center_x + x, color);
+        image.SetPixelValue(center_y - y, center_x - x, color);
+        image.SetPixelValue(center_y - y, center_x + x, color);
+        image.SetPixelValue(center_y + y, center_x - x, color);
+    }
+}
+
 template void ImagePainter::DrawCharacter<GrayImage, uint8_t>(GrayImage &image, char character, int32_t x, int32_t y, const uint8_t &color, int32_t font_size);
 template void ImagePainter::DrawCharacter<RgbImage, RgbPixel>(RgbImage &image, char character, int32_t x, int32_t y, const RgbPixel &color, int32_t font_size);
 template <typename ImageType, typename PixelType>
