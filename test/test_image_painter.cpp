@@ -43,6 +43,7 @@ int main(int argc, char **argv) {
     }
     ImagePainter::DrawHollowCircle(rgb_image_png, 130, 200, 10, RgbColor::kBlue);
     ImagePainter::DrawString(rgb_image_png, "This is a string.", 0, 0, RgbColor::kYellow, 24);
+    ImagePainter::DrawMidBresenhamEllipse(rgb_image_png, 200, 200, 30, 60, RgbColor::kOrangeRed);
 
     // Show painted image.
     Visualizor::ShowImage("Matrix image", image_matrix);

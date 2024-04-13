@@ -166,20 +166,22 @@ template <typename ImageType, typename PixelType>
 void ImagePainter::DrawMidBresenhamEllipse(ImageType &image, int32_t center_x, int32_t center_y, int32_t radius_x, int32_t radius_y, const PixelType &color) {
     int32_t y = 0;
     int32_t x = radius_x;
-    const auto &a = radius_y;
-    const auto &b = radius_x;
+    const float a = radius_y;
+    const float b = radius_x;
+    const float a2 = a * a;
+    const float b2 = b * b;
     image.SetPixelValue(center_y + y, center_x + x, color);
     image.SetPixelValue(center_y - y, center_x - x, color);
     image.SetPixelValue(center_y - y, center_x + x, color);
     image.SetPixelValue(center_y + y, center_x - x, color);
 
-    float d1 = b * b + a * a * (0.5f - b);
-    while (b * b * (y + 1) < a * a * (x - 0.5f)) {
+    float d1 = b2 + a2 * (0.5f - b);
+    while (b2 * (y + 1) < a2 * (x - 0.5f)) {
         if (d1 <= 0) {
-            d1 += b * b * (2 * y + 3);
+            d1 += b2 * (2 * y + 3);
             ++y;
         } else {
-            d1 += b * b * (2 * y + 3) + a * a * (2 - 2 * x);
+            d1 += b2 * (2 * y + 3) + a2 * (2 - 2 * x);
             ++y;
             --x;
         }
@@ -189,14 +191,14 @@ void ImagePainter::DrawMidBresenhamEllipse(ImageType &image, int32_t center_x, i
         image.SetPixelValue(center_y + y, center_x - x, color);
     }
 
-    float d2 = b * b * (y + 0.5f) * (y + 0.5f) + a * a * (x - 1) * (x - 1) - a * a * b * b;
+    float d2 = b2 * (y + 0.5f) * (y + 0.5f) + a2 * (x - 1) * (x - 1) - a2 * b2;
     while (x > 0) {
         if (d2 <= 0) {
-            d2 += b * b * (2 * y + 2) + a * a * (3 - 2 * x);
+            d2 += b2 * (2 * y + 2) + a2 * (3 - 2 * x);
             ++y;
             --x;
         } else {
-            d2 += a * a * (3 - 2 * x);
+            d2 += a2 * (3 - 2 * x);
             --x;
         }
         image.SetPixelValue(center_y + y, center_x + x, color);
