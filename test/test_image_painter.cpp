@@ -50,5 +50,6 @@ int main(int argc, char **argv) {
     Visualizor::WaitKey(1);
     Visualizor::ShowImage("Rgb Png Image", rgb_image_png);
     Visualizor::WaitKey(0);
+
     return 0;
 }
