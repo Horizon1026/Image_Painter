@@ -50,7 +50,11 @@ int main(int argc, char **argv) {
     for (float angle = 0.0f; angle < 3.14f; angle += 0.785f) {
         Mat2 rot = Mat2::Zero();
         rot << std::cos(angle), - std::sin(angle), std::sin(angle), std::cos(angle);
-        ImagePainter::DrawTrustRegionOfGaussian(rgb_image_png, Vec2(350, 200), rot * cov * rot.transpose(), RgbColor::kViolet);
+        if (angle > 1.0) {
+            ImagePainter::DrawTrustRegionOfGaussian(rgb_image_png, Vec2(350, 200), rot * cov * rot.transpose(), RgbColor::kLaunGreen);
+        } else {
+            ImagePainter::DrawTrustRegionOfGaussian(rgb_image_png, Vec2(350, 200), rot * cov * rot.transpose(), RgbColor::kViolet);
+        }
     }
 
     // Show painted image.

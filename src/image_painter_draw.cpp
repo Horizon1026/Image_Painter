@@ -218,11 +218,15 @@ void ImagePainter::DrawTrustRegionOfGaussian(ImageType &image, const Vec2 &cente
     const Mat2 &eigen_vectors = saes.eigenvectors();
     const float cos_theta = eigen_vectors(0, 0);
     const float sin_theta = eigen_vectors(1, 0);
-    const float &a = eigen_values(0);
-    const float &b = eigen_values(1);
+    const float &a = eigen_values(1);
+    const float &b = eigen_values(0);
+
+    // Compute step length with long_radius.
+    const float step = 1.0f / std::max(a, b);
+    RETURN_IF(std::isinf(step) || std::isnan(step));
 
     // Draw rotated ellipse.
-    for (float angle = 0.0f; angle < 6.28f; angle += 0.02f) {
+    for (float angle = 0.0f; angle < 6.28f; angle += step) {
         const float cos_angle = std::cos(angle);
         const float sin_angle = std::sin(angle);
         const float x = center.x() + b * cos_angle * cos_theta - a * sin_angle * sin_theta;
@@ -230,8 +234,8 @@ void ImagePainter::DrawTrustRegionOfGaussian(ImageType &image, const Vec2 &cente
 
         const int32_t int_x = static_cast<int32_t>(x);
         const int32_t int_y = static_cast<int32_t>(y);
-        image.SetPixelValue(x - static_cast<float>(int_x) > 0.5f ? int_x + 1 : int_x,
-            y - static_cast<float>(int_y) > 0.5f ? int_y + 1 : int_y, color);
+        image.SetPixelValue(y - static_cast<float>(int_y) > 0.5f ? int_y + 1 : int_y,
+            x - static_cast<float>(int_x) > 0.5f ? int_x + 1 : int_x, color);
     }
 }
 
