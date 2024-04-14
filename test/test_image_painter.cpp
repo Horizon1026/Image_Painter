@@ -2,6 +2,7 @@
 #include "log_report.h"
 #include "slam_memory.h"
 
+#include "datatype_basic.h"
 #include "visualizor.h"
 
 using namespace IMAGE_PAINTER;
@@ -32,7 +33,6 @@ int main(int argc, char **argv) {
     ImagePainter::DrawString(image_matrix, "This is a string.", 240, 100 - 16, static_cast<uint8_t>(0), 99);
     ImagePainter::DrawString(image_matrix, "This is a string.", 240, 100, static_cast<uint8_t>(127), 16);
     ImagePainter::DrawMidBresenhamEllipse(image_matrix, 180, 80, 40, 20, static_cast<uint8_t>(127));
-    ImagePainter::DrawMidBresenhamEllipse(image_matrix, 80, 80, 40, 20, static_cast<uint8_t>(127));
 
     // Create image of png file.
     RgbImage rgb_image_png;
@@ -44,6 +44,9 @@ int main(int argc, char **argv) {
     ImagePainter::DrawHollowCircle(rgb_image_png, 130, 200, 10, RgbColor::kBlue);
     ImagePainter::DrawString(rgb_image_png, "This is a string.", 0, 0, RgbColor::kYellow, 24);
     ImagePainter::DrawMidBresenhamEllipse(rgb_image_png, 200, 200, 30, 60, RgbColor::kOrangeRed);
+    Mat2 cov = Mat2::Identity();
+    cov << 30, 10, 10, 60;
+    ImagePainter::DrawTrustRegionOfGaussian(rgb_image_png, Vec2(90, 90), cov, RgbColor::kViolet);
 
     // Show painted image.
     Visualizor::ShowImage("Matrix image", image_matrix);

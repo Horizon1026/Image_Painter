@@ -57,6 +57,8 @@ public:
     template <typename ImageType, typename PixelType>
     static void DrawMidBresenhamEllipse(ImageType &image, int32_t center_x, int32_t center_y, int32_t radius_x, int32_t radius_y, const PixelType &color);
     template <typename ImageType, typename PixelType>
+    static void DrawTrustRegionOfGaussian(ImageType &image, const Vec2 &center, const Mat2 &covariance, const PixelType &color);
+    template <typename ImageType, typename PixelType>
     static void DrawCharacter(ImageType &image, char character, int32_t x, int32_t y, const PixelType &color, int32_t font_size = 12);
     template <typename ImageType, typename PixelType>
     static void DrawString(ImageType &image, const std::string &str, int32_t x, int32_t y, const PixelType &color, int32_t font_size = 12);

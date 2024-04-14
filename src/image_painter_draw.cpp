@@ -208,6 +208,13 @@ void ImagePainter::DrawMidBresenhamEllipse(ImageType &image, int32_t center_x, i
     }
 }
 
+template void ImagePainter::DrawTrustRegionOfGaussian<GrayImage, uint8_t>(GrayImage &image, const Vec2 &center, const Mat2 &covariance, const uint8_t &color);
+template void ImagePainter::DrawTrustRegionOfGaussian<RgbImage, RgbPixel>(RgbImage &image, const Vec2 &center, const Mat2 &covariance, const RgbPixel &color);
+template <typename ImageType, typename PixelType>
+void ImagePainter::DrawTrustRegionOfGaussian(ImageType &image, const Vec2 &center, const Mat2 &covariance, const PixelType &color) {
+
+}
+
 template void ImagePainter::DrawCharacter<GrayImage, uint8_t>(GrayImage &image, char character, int32_t x, int32_t y, const uint8_t &color, int32_t font_size);
 template void ImagePainter::DrawCharacter<RgbImage, RgbPixel>(RgbImage &image, char character, int32_t x, int32_t y, const RgbPixel &color, int32_t font_size);
 template <typename ImageType, typename PixelType>
