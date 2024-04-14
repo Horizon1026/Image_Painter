@@ -43,10 +43,15 @@ int main(int argc, char **argv) {
     }
     ImagePainter::DrawHollowCircle(rgb_image_png, 130, 200, 10, RgbColor::kBlue);
     ImagePainter::DrawString(rgb_image_png, "This is a string.", 0, 0, RgbColor::kYellow, 24);
-    ImagePainter::DrawMidBresenhamEllipse(rgb_image_png, 200, 200, 30, 60, RgbColor::kOrangeRed);
+    ImagePainter::DrawMidBresenhamEllipse(rgb_image_png, 200, 200, 20, 70, RgbColor::kOrangeRed);
+
     Mat2 cov = Mat2::Identity();
-    cov << 30, 10, 10, 60;
-    ImagePainter::DrawTrustRegionOfGaussian(rgb_image_png, Vec2(90, 90), cov, RgbColor::kViolet);
+    cov << 20, 0, 0, 70;
+    for (float angle = 0.0f; angle < 3.14f; angle += 0.785f) {
+        Mat2 rot = Mat2::Zero();
+        rot << std::cos(angle), - std::sin(angle), std::sin(angle), std::cos(angle);
+        ImagePainter::DrawTrustRegionOfGaussian(rgb_image_png, Vec2(350, 200), rot * cov * rot.transpose(), RgbColor::kViolet);
+    }
 
     // Show painted image.
     Visualizor::ShowImage("Matrix image", image_matrix);

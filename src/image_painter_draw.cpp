@@ -212,7 +212,27 @@ template void ImagePainter::DrawTrustRegionOfGaussian<GrayImage, uint8_t>(GrayIm
 template void ImagePainter::DrawTrustRegionOfGaussian<RgbImage, RgbPixel>(RgbImage &image, const Vec2 &center, const Mat2 &covariance, const RgbPixel &color);
 template <typename ImageType, typename PixelType>
 void ImagePainter::DrawTrustRegionOfGaussian(ImageType &image, const Vec2 &center, const Mat2 &covariance, const PixelType &color) {
+    // Decompose covariance matrix.
+    const Eigen::SelfAdjointEigenSolver<Mat2> saes(covariance);
+    const Vec2 &eigen_values = saes.eigenvalues();
+    const Mat2 &eigen_vectors = saes.eigenvectors();
+    const float cos_theta = eigen_vectors(0, 0);
+    const float sin_theta = eigen_vectors(1, 0);
+    const float &a = eigen_values(0);
+    const float &b = eigen_values(1);
 
+    // Draw rotated ellipse.
+    for (float angle = 0.0f; angle < 6.28f; angle += 0.02f) {
+        const float cos_angle = std::cos(angle);
+        const float sin_angle = std::sin(angle);
+        const float x = center.x() + b * cos_angle * cos_theta - a * sin_angle * sin_theta;
+        const float y = center.y() + b * cos_angle * sin_theta + a * sin_angle * cos_theta;
+
+        const int32_t int_x = static_cast<int32_t>(x);
+        const int32_t int_y = static_cast<int32_t>(y);
+        image.SetPixelValue(x - static_cast<float>(int_x) > 0.5f ? int_x + 1 : int_x,
+            y - static_cast<float>(int_y) > 0.5f ? int_y + 1 : int_y, color);
+    }
 }
 
 template void ImagePainter::DrawCharacter<GrayImage, uint8_t>(GrayImage &image, char character, int32_t x, int32_t y, const uint8_t &color, int32_t font_size);
