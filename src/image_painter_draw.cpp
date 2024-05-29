@@ -218,8 +218,8 @@ void ImagePainter::DrawTrustRegionOfGaussian(ImageType &image, const Vec2 &cente
     const Mat2 &eigen_vectors = saes.eigenvectors();
     const float cos_theta = eigen_vectors(0, 0);
     const float sin_theta = eigen_vectors(1, 0);
-    const float &a = eigen_values(1);
-    const float &b = eigen_values(0);
+    const float a = std::sqrt(eigen_values(1)) * 0.5f;
+    const float b = std::sqrt(eigen_values(0)) * 0.5f;
 
     // Compute step length with long_radius.
     const float step = 1.0f / std::max(a, b);

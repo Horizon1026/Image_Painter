@@ -45,8 +45,9 @@ int main(int argc, char **argv) {
     ImagePainter::DrawString(rgb_image_png, "This is a string.", 0, 0, RgbColor::kYellow, 24);
     ImagePainter::DrawMidBresenhamEllipse(rgb_image_png, 200, 200, 20, 70, RgbColor::kOrangeRed);
 
+    // Draw ellipses and rectangle to check the size of ellipses.
     Mat2 cov = Mat2::Identity();
-    cov << 20, 0, 0, 70;
+    cov << 20 * 20, 0, 0, 70 * 70;
     for (float angle = 0.0f; angle < 3.14f; angle += 0.785f) {
         Mat2 rot = Mat2::Zero();
         rot << std::cos(angle), - std::sin(angle), std::sin(angle), std::cos(angle);
@@ -56,6 +57,7 @@ int main(int argc, char **argv) {
             ImagePainter::DrawTrustRegionOfGaussian(rgb_image_png, Vec2(350, 200), rot * cov * rot.transpose(), RgbColor::kViolet);
         }
     }
+    ImagePainter::DrawHollowRectangle(rgb_image_png, 300, 300, 20, 70, RgbColor::kYellow);
 
     // Show painted image.
     Visualizor::ShowImage("Matrix image", image_matrix);
