@@ -52,9 +52,9 @@ int main(int argc, char **argv) {
         Mat2 rot = Mat2::Zero();
         rot << std::cos(angle), - std::sin(angle), std::sin(angle), std::cos(angle);
         if (angle > 1.0) {
-            ImagePainter::DrawTrustRegionOfGaussian(rgb_image_png, Vec2(350, 200), rot * cov * rot.transpose(), RgbColor::kLaunGreen);
+            ImagePainter::DrawTrustRegionOfGaussian(rgb_image_png, Vec2(350, 200), rot * cov * rot.transpose(), RgbColor::kLaunGreen, 1.0f);
         } else {
-            ImagePainter::DrawTrustRegionOfGaussian(rgb_image_png, Vec2(350, 200), rot * cov * rot.transpose(), RgbColor::kViolet);
+            ImagePainter::DrawTrustRegionOfGaussian(rgb_image_png, Vec2(350, 200), rot * cov * rot.transpose(), RgbColor::kViolet, 1.0f);
         }
     }
     ImagePainter::DrawHollowRectangle(rgb_image_png, 300, 300, 20, 70, RgbColor::kYellow);

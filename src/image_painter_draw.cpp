@@ -208,18 +208,18 @@ void ImagePainter::DrawMidBresenhamEllipse(ImageType &image, int32_t center_x, i
     }
 }
 
-template void ImagePainter::DrawTrustRegionOfGaussian<GrayImage, uint8_t>(GrayImage &image, const Vec2 &center, const Mat2 &covariance, const uint8_t &color);
-template void ImagePainter::DrawTrustRegionOfGaussian<RgbImage, RgbPixel>(RgbImage &image, const Vec2 &center, const Mat2 &covariance, const RgbPixel &color);
+template void ImagePainter::DrawTrustRegionOfGaussian<GrayImage, uint8_t>(GrayImage &image, const Vec2 &center, const Mat2 &covariance, const uint8_t &color, const float sigma_scale);
+template void ImagePainter::DrawTrustRegionOfGaussian<RgbImage, RgbPixel>(RgbImage &image, const Vec2 &center, const Mat2 &covariance, const RgbPixel &color, const float sigma_scale);
 template <typename ImageType, typename PixelType>
-void ImagePainter::DrawTrustRegionOfGaussian(ImageType &image, const Vec2 &center, const Mat2 &covariance, const PixelType &color) {
+void ImagePainter::DrawTrustRegionOfGaussian(ImageType &image, const Vec2 &center, const Mat2 &covariance, const PixelType &color, const float sigma_scale) {
     // Decompose covariance matrix.
     const Eigen::SelfAdjointEigenSolver<Mat2> saes(covariance);
     const Vec2 &eigen_values = saes.eigenvalues();
     const Mat2 &eigen_vectors = saes.eigenvectors();
     const float cos_theta = eigen_vectors(0, 0);
     const float sin_theta = eigen_vectors(1, 0);
-    const float a = std::sqrt(eigen_values(1)) * 0.5f;
-    const float b = std::sqrt(eigen_values(0)) * 0.5f;
+    const float a = std::sqrt(eigen_values(1)) * 0.5f * sigma_scale;
+    const float b = std::sqrt(eigen_values(0)) * 0.5f * sigma_scale;
 
     // Compute step length with long_radius.
     const float step = 1.0f / std::max(a, b);
