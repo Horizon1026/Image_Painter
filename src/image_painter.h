@@ -1,7 +1,7 @@
 #ifndef _IMAGE_PAINTER_H_
 #define _IMAGE_PAINTER_H_
 
-#include "datatype_basic.h"
+#include "basic_type.h"
 #include "datatype_image.h"
 
 namespace IMAGE_PAINTER {

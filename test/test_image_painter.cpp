@@ -2,7 +2,7 @@
 #include "slam_log_reporter.h"
 #include "slam_memory.h"
 
-#include "datatype_basic.h"
+#include "basic_type.h"
 #include "visualizor.h"
 
 using namespace IMAGE_PAINTER;

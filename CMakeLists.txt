@@ -14,8 +14,8 @@ endif()
 
 # Add visualizor.
 set( VISUALIZOR_PATH ${PROJECT_SOURCE_DIR}/../Visualizor2D )
-if ( NOT TARGET lib_image_visualizor )
-    add_subdirectory( ${VISUALIZOR_PATH}/src ${PROJECT_SOURCE_DIR}/build/lib_image_visualizor )
+if ( NOT TARGET lib_2d_visualizor )
+    add_subdirectory( ${VISUALIZOR_PATH}/src ${PROJECT_SOURCE_DIR}/build/lib_2d_visualizor )
 endif()
 
 # Create executable target to test image painter.
@@ -24,5 +24,5 @@ add_executable( test_image_painter
 )
 target_link_libraries( test_image_painter
     lib_image_painter
-    lib_image_visualizor
+    lib_2d_visualizor
 )
