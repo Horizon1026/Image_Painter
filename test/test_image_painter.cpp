@@ -3,7 +3,7 @@
 #include "slam_memory.h"
 
 #include "basic_type.h"
-#include "visualizor.h"
+#include "visualizor_2d.h"
 
 using namespace IMAGE_PAINTER;
 using namespace SLAM_UTILITY;
