@@ -36,7 +36,7 @@ int main(int argc, char **argv) {
 
     // Create image of png file.
     RgbImage rgb_image_png;
-    Visualizor::LoadImage(png_image_file, rgb_image_png);
+    Visualizor2D::LoadImage(png_image_file, rgb_image_png);
     ImagePainter::DrawHollowRectangle(rgb_image_png, 20, 20, 200, 200, RgbColor::kYellow);
     for (int32_t i = 0; i < 10; ++i) {
         ImagePainter::DrawNaiveLine(rgb_image_png, 111 - 10 * i, 10 * i, 100, 100, RgbColor::kGreen);
@@ -60,10 +60,10 @@ int main(int argc, char **argv) {
     ImagePainter::DrawHollowRectangle(rgb_image_png, 300, 300, 20, 70, RgbColor::kYellow);
 
     // Show painted image.
-    Visualizor::ShowImage("Matrix image", image_matrix);
-    Visualizor::WaitKey(1);
-    Visualizor::ShowImage("Rgb Png Image", rgb_image_png);
-    Visualizor::WaitKey(0);
+    Visualizor2D::ShowImage("Matrix image", image_matrix);
+    Visualizor2D::WaitKey(1);
+    Visualizor2D::ShowImage("Rgb Png Image", rgb_image_png);
+    Visualizor2D::WaitKey(0);
 
     return 0;
 }
