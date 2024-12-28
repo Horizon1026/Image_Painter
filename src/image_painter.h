@@ -10,6 +10,16 @@ namespace IMAGE_PAINTER {
 class ImagePainter final {
 
 public:
+    struct CameraView {
+        float fx = 0.0f;
+        float fy = 0.0f;
+        float cx = 0.0f;
+        float cy = 0.0f;
+        Vec3 p_wc = Vec3::Zero();
+        Quat q_wc = Quat::Identity();
+    };
+
+public:
     ImagePainter() = default;
     virtual ~ImagePainter() = default;
 
@@ -67,6 +77,13 @@ public:
     template <typename ImageType, typename PixelType>
     static void DrawString(ImageType &image, const std::string &str, int32_t x, int32_t y, const PixelType &color, int32_t font_size = 12);
 
+    // Support for render in camera view.
+    template <typename ImageType, typename PixelType>
+    static void RenderPointInCameraView(ImageType &image, const CameraView &cam, const Vec3 &point_in_w, const PixelType color, const int32_t radius = 1);
+    template <typename ImageType, typename PixelType>
+    static void RenderLineSegmentInCameraView(ImageType &image, const CameraView &cam, const Vec3 &line_s_point, const Vec3 &line_e_point, const PixelType color);
+    template <typename ImageType, typename PixelType>
+    static void RenderEllipseInCameraView(ImageType &image, const CameraView &cam, const Vec3 &mid_p_w, const Mat3 &covariance, const PixelType color);
 };
 
 }
