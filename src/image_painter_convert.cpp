@@ -36,6 +36,22 @@ void ImagePainter::ConvertUint8ToRgbAndUpsideDown(const uint8_t *gray,
     }
 }
 
+void ImagePainter::ConvertRgbToBgr(const uint8_t *rgb,
+                                   uint8_t *converted_rgb,
+                                   int32_t rgb_rows,
+                                   int32_t rgb_cols) {
+    const int32_t rgb_stride = rgb_cols * 3;
+    for (int32_t row = 0; row < rgb_rows; ++row) {
+        for (int32_t col = 0; col < rgb_cols; ++col) {
+            const int32_t offset_col = 3 * col;
+            const int32_t offset = row * rgb_stride + offset_col;
+            converted_rgb[offset] = rgb[offset + 2];
+            converted_rgb[offset + 1] = rgb[offset + 1];
+            converted_rgb[offset + 2] = rgb[offset];
+        }
+    }
+}
+
 void ImagePainter::ConvertRgbToBgrAndUpsideDown(const uint8_t *rgb,
                                                 uint8_t *converted_rgb,
                                                 int32_t rgb_rows,

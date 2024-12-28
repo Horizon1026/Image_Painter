@@ -36,6 +36,10 @@ public:
                                                uint8_t *rgb,
                                                int32_t gray_rows,
                                                int32_t gray_cols);
+    static void ConvertRgbToBgr(const uint8_t *rgb,
+                                uint8_t *converted_rgb,
+                                int32_t rgb_rows,
+                                int32_t rgb_cols);
     static void ConvertRgbToBgrAndUpsideDown(const uint8_t *rgb,
                                              uint8_t *converted_rgb,
                                              int32_t rgb_rows,
