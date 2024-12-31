@@ -11,6 +11,17 @@ namespace {
     constexpr float kMinValidViewDepth = 0.1f;
 }
 
+template void ImagePainter::RenderTextInCameraView<GrayImage, uint8_t>(GrayImage &image, const CameraView &cam, const Vec3 &p_w, const std::string &str, const uint8_t color, const int32_t font_size);
+template void ImagePainter::RenderTextInCameraView<RgbImage, RgbPixel>(RgbImage &image, const CameraView &cam, const Vec3 &p_w, const std::string &str, const RgbPixel color, const int32_t font_size);
+template <typename ImageType, typename PixelType>
+void ImagePainter::RenderTextInCameraView(ImageType &image, const CameraView &cam, const Vec3 &p_w, const std::string &str, const PixelType color, const int32_t font_size) {
+    const Vec3 p_c = cam.q_wc.inverse() * (p_w - cam.p_wc);
+    RETURN_IF(p_c.z() < kMinValidViewDepth);
+    const Vec2 pixel_uv_float = Vec2(p_c.x() / p_c.z() * cam.fx + cam.cx, p_c.y() / p_c.z() * cam.fy + cam.cy);
+    const Pixel pixel_uv = pixel_uv_float.cast<int32_t>();
+    DrawString(image, str, pixel_uv.x(), pixel_uv.y(), color, font_size);
+}
+
 template void ImagePainter::RenderPointInCameraView<GrayImage, uint8_t>(GrayImage &image, const CameraView &cam, const Vec3 &point_in_w, const uint8_t color, const int32_t radius);
 template void ImagePainter::RenderPointInCameraView<RgbImage, RgbPixel>(RgbImage &image, const CameraView &cam, const Vec3 &point_in_w, const RgbPixel color, const int32_t radius);
 template <typename ImageType, typename PixelType>

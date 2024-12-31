@@ -79,6 +79,8 @@ public:
 
     // Support for render in camera view.
     template <typename ImageType, typename PixelType>
+    static void RenderTextInCameraView(ImageType &image, const CameraView &cam, const Vec3 &p_w, const std::string &str, const PixelType color, const int32_t font_size = 12);
+    template <typename ImageType, typename PixelType>
     static void RenderPointInCameraView(ImageType &image, const CameraView &cam, const Vec3 &point_in_w, const PixelType color, const int32_t radius = 1);
     template <typename ImageType, typename PixelType>
     static void RenderLineSegmentInCameraView(ImageType &image, const CameraView &cam, const Vec3 &line_s_point, const Vec3 &line_e_point, const PixelType color);
