@@ -87,6 +87,8 @@ public:
     template <typename ImageType, typename PixelType>
     static void RenderLineSegmentInCameraView(ImageType &image, const CameraView &cam, const Vec3 &line_s_point, const Vec3 &line_e_point, const PixelType color);
     template <typename ImageType, typename PixelType>
+    static void RenderDashedLineSegmentInCameraView(ImageType &image, const CameraView &cam, const Vec3 &line_s_point, const Vec3 &line_e_point, const int32_t dot_step, const PixelType color);
+    template <typename ImageType, typename PixelType>
     static void RenderEllipseInCameraView(ImageType &image, const CameraView &cam, const Vec3 &mid_p_w, const Mat3 &covariance, const PixelType color);
 };
 

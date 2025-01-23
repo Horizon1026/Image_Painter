@@ -59,6 +59,32 @@ void ImagePainter::RenderLineSegmentInCameraView(ImageType &image, const CameraV
     DrawBressenhanLine(image, pixel_uv_i.x(), pixel_uv_i.y(), pixel_uv_j.x(), pixel_uv_j.y(), color);
 }
 
+template void ImagePainter::RenderDashedLineSegmentInCameraView<GrayImage, uint8_t>(GrayImage &image, const CameraView &cam, const Vec3 &line_s_point, const Vec3 &line_e_point, const int32_t dot_step, const uint8_t color);
+template void ImagePainter::RenderDashedLineSegmentInCameraView<RgbImage, RgbPixel>(RgbImage &image, const CameraView &cam, const Vec3 &line_s_point, const Vec3 &line_e_point, const int32_t dot_step, const RgbPixel color);
+template <typename ImageType, typename PixelType>
+void ImagePainter::RenderDashedLineSegmentInCameraView(ImageType &image, const CameraView &cam, const Vec3 &line_s_point, const Vec3 &line_e_point, const int32_t dot_step, const PixelType color) {
+    Vec3 p_c_i = cam.q_wc.inverse() * (line_s_point - cam.p_wc);
+    Vec3 p_c_j = cam.q_wc.inverse() * (line_e_point - cam.p_wc);
+    RETURN_IF(p_c_i.z() < kMinValidViewDepth && p_c_j.z() < kMinValidViewDepth);
+
+    // If one point of line is outside, cut this line to make the two points of new line all visilbe.
+    if (p_c_i.z() < kMinValidViewDepth || p_c_j.z() < kMinValidViewDepth) {
+        const float w = (p_c_i.z() - kMinValidViewDepth) / (p_c_i.z() - p_c_j.z());
+        const Vec3 p_c_mid = Vec3(w * p_c_j.x() + (1.0f - w) * p_c_i.x(),
+                                  w * p_c_j.y() + (1.0f - w) * p_c_i.y(),
+                                  w * p_c_j.z() + (1.0f - w) * p_c_i.z());
+        if (p_c_i.z() < kMinValidViewDepth) {
+            p_c_i = p_c_mid;
+        } else {
+            p_c_j = p_c_mid;
+        }
+    }
+
+    const Pixel pixel_uv_i = Vec2(p_c_i.x() / p_c_i.z() * cam.fx + cam.cx, p_c_i.y() / p_c_i.z() * cam.fy + cam.cy).cast<int32_t>();
+    const Pixel pixel_uv_j = Vec2(p_c_j.x() / p_c_j.z() * cam.fx + cam.cx, p_c_j.y() / p_c_j.z() * cam.fy + cam.cy).cast<int32_t>();
+    DrawDashedLine(image, pixel_uv_i.x(), pixel_uv_i.y(), pixel_uv_j.x(), pixel_uv_j.y(), dot_step, color);
+}
+
 template void ImagePainter::RenderEllipseInCameraView<GrayImage, uint8_t>(GrayImage &image, const CameraView &cam, const Vec3 &mid_p_w, const Mat3 &covariance, const uint8_t color);
 template void ImagePainter::RenderEllipseInCameraView<RgbImage, RgbPixel>(RgbImage &image, const CameraView &cam, const Vec3 &mid_p_w, const Mat3 &covariance, const RgbPixel color);
 template <typename ImageType, typename PixelType>
