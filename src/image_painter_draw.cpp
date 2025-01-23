@@ -120,6 +120,43 @@ void ImagePainter::DrawNaiveLine(ImageType &image, int32_t x1, int32_t y1, int32
     }
 }
 
+template void ImagePainter::DrawDashedLine<GrayImage, uint8_t>(GrayImage &image, int32_t x1, int32_t y1, int32_t x2, int32_t y2, int32_t step, const uint8_t &color);
+template void ImagePainter::DrawDashedLine<RgbImage, RgbPixel>(RgbImage &image, int32_t x1, int32_t y1, int32_t x2, int32_t y2, int32_t step, const RgbPixel &color);
+template <typename ImageType, typename PixelType>
+void ImagePainter::DrawDashedLine(ImageType &image, int32_t x1, int32_t y1, int32_t x2, int32_t y2, int32_t step, const PixelType &color) {
+    bool is_steep = false;
+
+    if (std::abs(x1 - x2) < std::abs(y1 - y2)) {
+        SlamOperation::ExchangeValue(x1, y1);
+        SlamOperation::ExchangeValue(x2, y2);
+        is_steep = true;
+    }
+
+    if (x1 > x2) {
+        SlamOperation::ExchangeValue(x1, x2);
+        SlamOperation::ExchangeValue(y1, y2);
+    }
+
+    for (int32_t x = x1; x <= x2; x += step) {
+        const float lambda = static_cast<float>(x - x1) / static_cast<float>(x2 - x1);
+        const int32_t y = static_cast<int32_t>(static_cast<float>(y1) * (1.0f - lambda) + static_cast<float>(y2) * lambda);
+        if (is_steep) {
+            image.SetPixelValue(x, y, color);
+        } else {
+            image.SetPixelValue(y, x, color);
+        }
+    }
+
+    // Draw the end point.
+    const float lambda = static_cast<float>(x2 - x1) / static_cast<float>(x2 - x1);
+    const int32_t y = static_cast<int32_t>(static_cast<float>(y1) * (1.0f - lambda) + static_cast<float>(y2) * lambda);
+    if (is_steep) {
+        image.SetPixelValue(x2, y, color);
+    } else {
+        image.SetPixelValue(y, x2, color);
+    }
+}
+
 template void ImagePainter::DrawSolidCircle<GrayImage, uint8_t>(GrayImage &image, int32_t center_x, int32_t center_y, int32_t radius, const uint8_t &color);
 template void ImagePainter::DrawSolidCircle<RgbImage, RgbPixel>(RgbImage &image, int32_t center_x, int32_t center_y, int32_t radius, const RgbPixel &color);
 template <typename ImageType, typename PixelType>

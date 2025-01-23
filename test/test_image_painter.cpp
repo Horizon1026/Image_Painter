@@ -33,6 +33,7 @@ int main(int argc, char **argv) {
     ImagePainter::DrawString(image_matrix, "This is a string.", 240, 100 - 16, static_cast<uint8_t>(0), 99);
     ImagePainter::DrawString(image_matrix, "This is a string.", 240, 100, static_cast<uint8_t>(127), 16);
     ImagePainter::DrawMidBresenhamEllipse(image_matrix, 180, 80, 40, 20, static_cast<uint8_t>(127));
+    ImagePainter::DrawDashedLine(image_matrix, 20, 20, 60, 80, 5, static_cast<uint8_t>(200));
 
     // Create image of png file.
     RgbImage rgb_image_png;

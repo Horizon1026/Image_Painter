@@ -76,6 +76,8 @@ public:
     static void DrawCharacter(ImageType &image, char character, int32_t x, int32_t y, const PixelType &color, int32_t font_size = 12);
     template <typename ImageType, typename PixelType>
     static void DrawString(ImageType &image, const std::string &str, int32_t x, int32_t y, const PixelType &color, int32_t font_size = 12);
+    template <typename ImageType, typename PixelType>
+    static void DrawDashedLine(ImageType &image, int32_t x1, int32_t y1, int32_t x2, int32_t y2, int32_t step, const PixelType &color);
 
     // Support for render in camera view.
     template <typename ImageType, typename PixelType>
