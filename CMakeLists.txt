@@ -8,13 +8,13 @@ set( CMAKE_EXPORT_COMPILE_COMMANDS ON )
 set( CMAKE_CXX_STANDARD 20 )
 
 # Add image painter.
-if ( NOT TARGET lib_image_painter )
+if( NOT TARGET lib_image_painter )
     add_subdirectory( src ${PROJECT_SOURCE_DIR}/build/lib_image_painter )
 endif()
 
 # Add visualizor.
 set( VISUALIZOR_PATH ${PROJECT_SOURCE_DIR}/../Visualizor2D )
-if ( NOT TARGET lib_2d_visualizor )
+if( NOT TARGET lib_2d_visualizor )
     add_subdirectory( ${VISUALIZOR_PATH}/src ${PROJECT_SOURCE_DIR}/build/lib_2d_visualizor )
 endif()
 
