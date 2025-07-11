@@ -328,7 +328,7 @@ void ImagePainter::DrawString(ImageType &image, const std::string &str, int32_t 
         font_size = 12;
     }
     const int32_t dx = font_size >> 1;
-    for (const auto &chr : str) {
+    for (const auto &chr: str) {
         DrawCharacter(image, chr, x, y, color, font_size);
         x += dx;
     }
