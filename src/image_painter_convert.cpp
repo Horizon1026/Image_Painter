@@ -4,7 +4,7 @@
 #include "slam_memory.h"
 #include "slam_operations.h"
 
-namespace IMAGE_PAINTER {
+namespace image_painter {
 
 void ImagePainter::ConvertUint8ToRgb(const uint8_t *gray, uint8_t *rgb, int32_t gray_size) {
     for (int32_t i = 0; i < gray_size; ++i) {
@@ -149,4 +149,4 @@ bool ImagePainter::ConvertMatrixToImage(const TMat<Scalar> &matrix, RgbImage &im
     return true;
 }
 
-}  // namespace IMAGE_PAINTER
+}  // namespace image_painter

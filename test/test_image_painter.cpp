@@ -5,9 +5,9 @@
 #include "basic_type.h"
 #include "visualizor_2d.h"
 
-using namespace IMAGE_PAINTER;
-using namespace SLAM_UTILITY;
-using namespace SLAM_VISUALIZOR;
+using namespace image_painter;
+using namespace slam_utility;
+using namespace slam_visualizor;
 
 namespace {
 constexpr int32_t kScale = 3;

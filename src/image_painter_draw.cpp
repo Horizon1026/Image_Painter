@@ -5,7 +5,7 @@
 #include "slam_memory.h"
 #include "slam_operations.h"
 
-namespace IMAGE_PAINTER {
+namespace image_painter {
 
 template void ImagePainter::DrawSolidRectangle<GrayImage, uint8_t>(GrayImage &image, int32_t x, int32_t y, int32_t width, int32_t height, const uint8_t &color);
 template void ImagePainter::DrawSolidRectangle<RgbImage, RgbPixel>(RgbImage &image, int32_t x, int32_t y, int32_t width, int32_t height, const RgbPixel &color);
@@ -343,4 +343,4 @@ void ImagePainter::DrawString(ImageType &image, const std::string &str, int32_t 
     }
 }
 
-}  // namespace IMAGE_PAINTER
+}  // namespace image_painter

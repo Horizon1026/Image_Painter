@@ -4,7 +4,7 @@
 #include "basic_type.h"
 #include "datatype_image.h"
 
-namespace IMAGE_PAINTER {
+namespace image_painter {
 
 /* Class Image Painter Declaration. */
 class ImagePainter final {
@@ -76,6 +76,6 @@ public:
     static void RenderEllipseInCameraView(ImageType &image, const CameraView &cam, const Vec3 &mid_p_w, const Mat3 &covariance, const PixelType color);
 };
 
-}  // namespace IMAGE_PAINTER
+}  // namespace image_painter
 
 #endif  // end of _IMAGE_PAINTER_H_

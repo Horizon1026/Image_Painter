@@ -4,7 +4,7 @@
 #include "array"
 #include "basic_type.h"
 
-namespace IMAGE_PAINTER {
+namespace image_painter {
 
 // Class AssicFonts Declaration.
 class AssicFonts {
@@ -23,6 +23,6 @@ private:
     static std::array<std::array<uint8_t, 36>, 95> ascii_2412_;
 };
 
-}  // namespace IMAGE_PAINTER
+}  // namespace image_painter
 
 #endif  // end of _ASSIC_FONTS_H_

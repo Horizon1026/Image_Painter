@@ -5,7 +5,7 @@
 #include "slam_memory.h"
 #include "slam_operations.h"
 
-namespace IMAGE_PAINTER {
+namespace image_painter {
 
 namespace {
     constexpr float kMinValidViewDepth = 0.1f;
@@ -121,4 +121,4 @@ void ImagePainter::RenderEllipseInCameraView(ImageType &image, const CameraView 
     DrawTrustRegionOfGaussian(image, pixel_uv, pixel_cov, color);
 }
 
-}  // namespace IMAGE_PAINTER
+}  // namespace image_painter
