@@ -1,8 +1,8 @@
 #ifndef _ASSIC_FONTS_H_
 #define _ASSIC_FONTS_H_
 
-#include "basic_type.h"
 #include "array"
+#include "basic_type.h"
 
 namespace IMAGE_PAINTER {
 
@@ -21,9 +21,8 @@ private:
     static std::array<std::array<uint8_t, 12>, 95> ascii_1206_;
     static std::array<std::array<uint8_t, 16>, 95> ascii_1608_;
     static std::array<std::array<uint8_t, 36>, 95> ascii_2412_;
-
 };
 
-}
+}  // namespace IMAGE_PAINTER
 
-#endif // end of _ASSIC_FONTS_H_
+#endif  // end of _ASSIC_FONTS_H_

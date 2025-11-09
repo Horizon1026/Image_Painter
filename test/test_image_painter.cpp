@@ -10,10 +10,10 @@ using namespace SLAM_UTILITY;
 using namespace SLAM_VISUALIZOR;
 
 namespace {
-    constexpr int32_t kScale = 3;
-    constexpr int32_t kMatrixRow = 90;
-    constexpr int32_t kMatrixCol = 180;
-}
+constexpr int32_t kScale = 3;
+constexpr int32_t kMatrixRow = 90;
+constexpr int32_t kMatrixCol = 180;
+}  // namespace
 
 int main(int argc, char **argv) {
     ReportInfo(YELLOW ">> Test image painter." << RESET_COLOR);
@@ -51,7 +51,7 @@ int main(int argc, char **argv) {
     cov << 20 * 20, 0, 0, 70 * 70;
     for (float angle = 0.0f; angle < 3.14f; angle += 0.785f) {
         Mat2 rot = Mat2::Zero();
-        rot << std::cos(angle), - std::sin(angle), std::sin(angle), std::cos(angle);
+        rot << std::cos(angle), -std::sin(angle), std::sin(angle), std::cos(angle);
         if (angle > 1.0) {
             ImagePainter::DrawTrustRegionOfGaussian(rgb_image_png, Vec2(350, 200), rot * cov * rot.transpose(), RgbColor::kLaunGreen, 1.0f);
         } else {

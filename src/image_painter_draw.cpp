@@ -1,5 +1,5 @@
-#include "image_painter.h"
 #include "assic_fonts.h"
+#include "image_painter.h"
 
 #include "slam_log_reporter.h"
 #include "slam_memory.h"
@@ -23,8 +23,10 @@ void ImagePainter::DrawSolidRectangle(ImageType &image, int32_t x, int32_t y, in
     }
 }
 
-template void ImagePainter::DrawHollowRectangle<GrayImage, uint8_t>(GrayImage &image, int32_t x, int32_t y, int32_t width, int32_t height, const uint8_t &color);
-template void ImagePainter::DrawHollowRectangle<RgbImage, RgbPixel>(RgbImage &image, int32_t x, int32_t y, int32_t width, int32_t height, const RgbPixel &color);
+template void ImagePainter::DrawHollowRectangle<GrayImage, uint8_t>(GrayImage &image, int32_t x, int32_t y, int32_t width, int32_t height,
+                                                                    const uint8_t &color);
+template void ImagePainter::DrawHollowRectangle<RgbImage, RgbPixel>(RgbImage &image, int32_t x, int32_t y, int32_t width, int32_t height,
+                                                                    const RgbPixel &color);
 template <typename ImageType, typename PixelType>
 void ImagePainter::DrawHollowRectangle(ImageType &image, int32_t x, int32_t y, int32_t width, int32_t height, const PixelType &color) {
     if (image.data() == nullptr || width < 0 || height < 0) {
@@ -120,8 +122,10 @@ void ImagePainter::DrawNaiveLine(ImageType &image, int32_t x1, int32_t y1, int32
     }
 }
 
-template void ImagePainter::DrawDashedLine<GrayImage, uint8_t>(GrayImage &image, int32_t x1, int32_t y1, int32_t x2, int32_t y2, int32_t step, const uint8_t &color);
-template void ImagePainter::DrawDashedLine<RgbImage, RgbPixel>(RgbImage &image, int32_t x1, int32_t y1, int32_t x2, int32_t y2, int32_t step, const RgbPixel &color);
+template void ImagePainter::DrawDashedLine<GrayImage, uint8_t>(GrayImage &image, int32_t x1, int32_t y1, int32_t x2, int32_t y2, int32_t step,
+                                                               const uint8_t &color);
+template void ImagePainter::DrawDashedLine<RgbImage, RgbPixel>(RgbImage &image, int32_t x1, int32_t y1, int32_t x2, int32_t y2, int32_t step,
+                                                               const RgbPixel &color);
 template <typename ImageType, typename PixelType>
 void ImagePainter::DrawDashedLine(ImageType &image, int32_t x1, int32_t y1, int32_t x2, int32_t y2, int32_t step, const PixelType &color) {
     bool is_steep = false;
@@ -197,8 +201,10 @@ void ImagePainter::DrawHollowCircle(ImageType &image, int32_t center_x, int32_t 
     }
 }
 
-template void ImagePainter::DrawMidBresenhamEllipse<GrayImage, uint8_t>(GrayImage &image, int32_t center_x, int32_t center_y, int32_t radius_x, int32_t radius_y, const uint8_t &color);
-template void ImagePainter::DrawMidBresenhamEllipse<RgbImage, RgbPixel>(RgbImage &image, int32_t center_x, int32_t center_y, int32_t radius_x, int32_t radius_y, const RgbPixel &color);
+template void ImagePainter::DrawMidBresenhamEllipse<GrayImage, uint8_t>(GrayImage &image, int32_t center_x, int32_t center_y, int32_t radius_x,
+                                                                        int32_t radius_y, const uint8_t &color);
+template void ImagePainter::DrawMidBresenhamEllipse<RgbImage, RgbPixel>(RgbImage &image, int32_t center_x, int32_t center_y, int32_t radius_x, int32_t radius_y,
+                                                                        const RgbPixel &color);
 template <typename ImageType, typename PixelType>
 void ImagePainter::DrawMidBresenhamEllipse(ImageType &image, int32_t center_x, int32_t center_y, int32_t radius_x, int32_t radius_y, const PixelType &color) {
     int32_t y = 0;
@@ -245,8 +251,10 @@ void ImagePainter::DrawMidBresenhamEllipse(ImageType &image, int32_t center_x, i
     }
 }
 
-template void ImagePainter::DrawTrustRegionOfGaussian<GrayImage, uint8_t>(GrayImage &image, const Vec2 &center, const Mat2 &covariance, const uint8_t &color, const float sigma_scale);
-template void ImagePainter::DrawTrustRegionOfGaussian<RgbImage, RgbPixel>(RgbImage &image, const Vec2 &center, const Mat2 &covariance, const RgbPixel &color, const float sigma_scale);
+template void ImagePainter::DrawTrustRegionOfGaussian<GrayImage, uint8_t>(GrayImage &image, const Vec2 &center, const Mat2 &covariance, const uint8_t &color,
+                                                                          const float sigma_scale);
+template void ImagePainter::DrawTrustRegionOfGaussian<RgbImage, RgbPixel>(RgbImage &image, const Vec2 &center, const Mat2 &covariance, const RgbPixel &color,
+                                                                          const float sigma_scale);
 template <typename ImageType, typename PixelType>
 void ImagePainter::DrawTrustRegionOfGaussian(ImageType &image, const Vec2 &center, const Mat2 &covariance, const PixelType &color, const float sigma_scale) {
     // Decompose covariance matrix.
@@ -271,8 +279,7 @@ void ImagePainter::DrawTrustRegionOfGaussian(ImageType &image, const Vec2 &cente
 
         const int32_t int_x = static_cast<int32_t>(x);
         const int32_t int_y = static_cast<int32_t>(y);
-        image.SetPixelValue(y - static_cast<float>(int_y) > 0.5f ? int_y + 1 : int_y,
-            x - static_cast<float>(int_x) > 0.5f ? int_x + 1 : int_x, color);
+        image.SetPixelValue(y - static_cast<float>(int_y) > 0.5f ? int_y + 1 : int_y, x - static_cast<float>(int_x) > 0.5f ? int_x + 1 : int_x, color);
     }
 }
 
@@ -320,8 +327,10 @@ void ImagePainter::DrawCharacter(ImageType &image, char character, int32_t x, in
     }
 }
 
-template void ImagePainter::DrawString<GrayImage, uint8_t>(GrayImage &image, const std::string &str, int32_t x, int32_t y, const uint8_t &color, int32_t font_size);
-template void ImagePainter::DrawString<RgbImage, RgbPixel>(RgbImage &image, const std::string &str, int32_t x, int32_t y, const RgbPixel &color, int32_t font_size);
+template void ImagePainter::DrawString<GrayImage, uint8_t>(GrayImage &image, const std::string &str, int32_t x, int32_t y, const uint8_t &color,
+                                                           int32_t font_size);
+template void ImagePainter::DrawString<RgbImage, RgbPixel>(RgbImage &image, const std::string &str, int32_t x, int32_t y, const RgbPixel &color,
+                                                           int32_t font_size);
 template <typename ImageType, typename PixelType>
 void ImagePainter::DrawString(ImageType &image, const std::string &str, int32_t x, int32_t y, const PixelType &color, int32_t font_size) {
     if (font_size != 12 && font_size != 16 && font_size != 24) {
@@ -334,4 +343,4 @@ void ImagePainter::DrawString(ImageType &image, const std::string &str, int32_t 
     }
 }
 
-}
+}  // namespace IMAGE_PAINTER
