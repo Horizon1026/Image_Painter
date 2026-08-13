@@ -17,6 +17,10 @@ public:
         float cy = 0.0f;
         Vec3 p_wc = Vec3::Zero();
         Quat q_wc = Quat::Identity();
+        // Orthographic projection. When enabled, fx / fy are replaced by ortho_scale
+        // (pixels per world unit) and there is no perspective divide by depth.
+        bool is_ortho = false;
+        float ortho_scale = 1.0f;
     };
 
 public:

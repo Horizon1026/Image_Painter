@@ -9,6 +9,16 @@ namespace image_painter {
 
 namespace {
     constexpr float kMinValidViewDepth = 0.1f;
+
+    // Project a camera-frame point into a pixel position. Perspective divides by depth;
+    // orthographic uses a constant pixels-per-world-unit scale. The near plane reject /
+    // clip is kept for both modes so the cpu and gpu pipelines stay pixel-identical.
+    Vec2 ProjectPointInCameraViewToPixel(const ImagePainter::CameraView &cam, const Vec3 &p_c) {
+        if (cam.is_ortho) {
+            return Vec2(p_c.x() * cam.ortho_scale + cam.cx, p_c.y() * cam.ortho_scale + cam.cy);
+        }
+        return Vec2(p_c.x() / p_c.z() * cam.fx + cam.cx, p_c.y() / p_c.z() * cam.fy + cam.cy);
+    }
 }
 
 template void ImagePainter::RenderTextInCameraView<GrayImage, uint8_t>(GrayImage &image, const CameraView &cam, const Vec3 &p_w, const std::string &str,
@@ -20,7 +30,7 @@ void ImagePainter::RenderTextInCameraView(ImageType &image, const CameraView &ca
                                           const int32_t font_size) {
     const Vec3 p_c = cam.q_wc.inverse() * (p_w - cam.p_wc);
     RETURN_IF(p_c.z() < kMinValidViewDepth);
-    const Vec2 pixel_uv_float = Vec2(p_c.x() / p_c.z() * cam.fx + cam.cx, p_c.y() / p_c.z() * cam.fy + cam.cy);
+    const Vec2 pixel_uv_float = ProjectPointInCameraViewToPixel(cam, p_c);
     const Pixel pixel_uv = pixel_uv_float.cast<int32_t>();
     DrawString(image, str, pixel_uv.x(), pixel_uv.y(), color, font_size);
 }
@@ -33,7 +43,7 @@ template <typename ImageType, typename PixelType>
 void ImagePainter::RenderPointInCameraView(ImageType &image, const CameraView &cam, const Vec3 &point_in_w, const PixelType color, const int32_t radius) {
     const Vec3 p_c = cam.q_wc.inverse() * (point_in_w - cam.p_wc);
     RETURN_IF(p_c.z() < kMinValidViewDepth);
-    const Vec2 pixel_uv_float = Vec2(p_c.x() / p_c.z() * cam.fx + cam.cx, p_c.y() / p_c.z() * cam.fy + cam.cy);
+    const Vec2 pixel_uv_float = ProjectPointInCameraViewToPixel(cam, p_c);
     const Pixel pixel_uv = pixel_uv_float.cast<int32_t>();
     DrawSolidCircle(image, pixel_uv.x(), pixel_uv.y(), radius, color);
 }
@@ -60,8 +70,8 @@ void ImagePainter::RenderLineSegmentInCameraView(ImageType &image, const CameraV
         }
     }
 
-    const Pixel pixel_uv_i = Vec2(p_c_i.x() / p_c_i.z() * cam.fx + cam.cx, p_c_i.y() / p_c_i.z() * cam.fy + cam.cy).cast<int32_t>();
-    const Pixel pixel_uv_j = Vec2(p_c_j.x() / p_c_j.z() * cam.fx + cam.cx, p_c_j.y() / p_c_j.z() * cam.fy + cam.cy).cast<int32_t>();
+    const Pixel pixel_uv_i = ProjectPointInCameraViewToPixel(cam, p_c_i).cast<int32_t>();
+    const Pixel pixel_uv_j = ProjectPointInCameraViewToPixel(cam, p_c_j).cast<int32_t>();
     DrawBressenhanLine(image, pixel_uv_i.x(), pixel_uv_i.y(), pixel_uv_j.x(), pixel_uv_j.y(), color);
 }
 
@@ -87,8 +97,8 @@ void ImagePainter::RenderDashedLineSegmentInCameraView(ImageType &image, const C
         }
     }
 
-    const Pixel pixel_uv_i = Vec2(p_c_i.x() / p_c_i.z() * cam.fx + cam.cx, p_c_i.y() / p_c_i.z() * cam.fy + cam.cy).cast<int32_t>();
-    const Pixel pixel_uv_j = Vec2(p_c_j.x() / p_c_j.z() * cam.fx + cam.cx, p_c_j.y() / p_c_j.z() * cam.fy + cam.cy).cast<int32_t>();
+    const Pixel pixel_uv_i = ProjectPointInCameraViewToPixel(cam, p_c_i).cast<int32_t>();
+    const Pixel pixel_uv_j = ProjectPointInCameraViewToPixel(cam, p_c_j).cast<int32_t>();
     DrawDashedLine(image, pixel_uv_i.x(), pixel_uv_i.y(), pixel_uv_j.x(), pixel_uv_j.y(), dot_step, color);
 }
 
@@ -102,6 +112,15 @@ void ImagePainter::RenderEllipseInCameraView(ImageType &image, const CameraView 
     const Vec3 p_c = cam.q_wc.inverse() * (mid_p_w - cam.p_wc);
     const Mat3 cov_c = cam.q_wc.inverse() * covariance * cam.q_wc;
     RETURN_IF(p_c.z() < kMinValidViewDepth);
+
+    if (cam.is_ortho) {
+        // Orthographic projection is linear: the 2d gaussian keeps the in-plane part of
+        // the covariance, scaled by the constant pixels-per-world-unit factor.
+        const Vec2 pixel_uv = Vec2(p_c.x() * cam.ortho_scale + cam.cx, p_c.y() * cam.ortho_scale + cam.cy);
+        const Mat2 pixel_cov = cov_c.block<2, 2>(0, 0) * (cam.ortho_scale * cam.ortho_scale);
+        DrawTrustRegionOfGaussian(image, pixel_uv, pixel_cov, color);
+        return;
+    }
 
     // Compute focus of camera.
     const float focus = 0.5f * (cam.fx + cam.fy);
