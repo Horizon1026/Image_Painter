@@ -6,6 +6,13 @@ A simple paintor for gray and rgb image.
 - [x] Draw line.
 - [x] Draw circle.
 - [x] Draw ellipse.
+- [x] Draw rectangle.
+- [x] Draw dashed line.
+- [x] Draw string with ascii fonts.
+- [x] Draw gaussian trust region.
+- [x] Convert matrix to gray / rgb image.
+- [x] Convert gray <-> rgb and rgb <-> bgr.
+- [x] Render point / line / text / ellipse in camera view.
 
 # Dependence
 
