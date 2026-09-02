@@ -1,8 +1,9 @@
 #ifndef _ASSIC_FONTS_H_
 #define _ASSIC_FONTS_H_
 
-#include "array"
 #include "basic_type.h"
+
+#include "array"
 
 namespace image_painter {
 
