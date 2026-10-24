@@ -7,7 +7,7 @@
 
 namespace image_painter {
 
-// Class AssicFonts Declaration.
+/* Class AssicFonts Declaration */
 class AssicFonts {
 
 public:
