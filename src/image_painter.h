@@ -56,13 +56,40 @@ public:
     template <typename ImageType, typename PixelType>
     static void DrawMidBresenhamEllipse(ImageType &image, int32_t center_x, int32_t center_y, int32_t radius_x, int32_t radius_y, const PixelType &color);
     template <typename ImageType, typename PixelType>
-    static void DrawTrustRegionOfGaussian(ImageType &image, const Vec2 &center, const Mat2 &covariance, const PixelType &color, const float sigma_scale = 3.0f);
+    static void DrawTrustRegionOfGaussian(ImageType &image, int32_t center_x, int32_t center_y, const Mat2 &covariance, const PixelType &color,
+                                          float sigma_scale = 3.0f);
     template <typename ImageType, typename PixelType>
     static void DrawCharacter(ImageType &image, char character, int32_t x, int32_t y, const PixelType &color, int32_t font_size = 12);
     template <typename ImageType, typename PixelType>
     static void DrawString(ImageType &image, const std::string &str, int32_t x, int32_t y, const PixelType &color, int32_t font_size = 12);
     template <typename ImageType, typename PixelType>
     static void DrawDashedLine(ImageType &image, int32_t x1, int32_t y1, int32_t x2, int32_t y2, int32_t step, const PixelType &color);
+
+    // Subpixel overloads. All geometry arguments must be float; font_size remains int32_t.
+    template <typename ImageType, typename PixelType>
+    static void DrawSolidRectangle(ImageType &image, float x, float y, float width, float height, const PixelType &color);
+    template <typename ImageType, typename PixelType>
+    static void DrawHollowRectangle(ImageType &image, float x, float y, float width, float height, const PixelType &color);
+    template <typename ImageType, typename PixelType>
+    static void DrawBressenhanLine(ImageType &image, float x1, float y1, float x2, float y2, const PixelType &color);
+    template <typename ImageType, typename PixelType>
+    static void DrawNaiveLine(ImageType &image, float x1, float y1, float x2, float y2, const PixelType &color);
+    template <typename ImageType, typename PixelType>
+    static void DrawSolidCircle(ImageType &image, float center_x, float center_y, float radius, const PixelType &color);
+    template <typename ImageType, typename PixelType>
+    static void DrawHollowCircle(ImageType &image, float center_x, float center_y, float radius, const PixelType &color);
+    template <typename ImageType, typename PixelType>
+    static void DrawMidBresenhamEllipse(ImageType &image, float center_x, float center_y, float radius_x, float radius_y, const PixelType &color);
+    template <typename ImageType, typename PixelType>
+    static void DrawDashedLine(ImageType &image, float x1, float y1, float x2, float y2, float step, const PixelType &color);
+    template <typename ImageType, typename PixelType>
+    static void DrawCharacter(ImageType &image, char character, float x, float y, const PixelType &color, int32_t font_size = 12);
+    template <typename ImageType, typename PixelType>
+    static void DrawString(ImageType &image, const std::string &str, float x, float y, const PixelType &color, int32_t font_size = 12);
+    // Same covariance/radius convention as the integer overload, with antialiased edges.
+    template <typename ImageType, typename PixelType>
+    static void DrawTrustRegionOfGaussian(ImageType &image, float center_x, float center_y, const Mat2 &covariance, const PixelType &color,
+                                          float sigma_scale = 3.0f);
 
     // Support for render in camera view.
     template <typename ImageType, typename PixelType>

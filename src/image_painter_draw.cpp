@@ -251,12 +251,13 @@ void ImagePainter::DrawMidBresenhamEllipse(ImageType &image, int32_t center_x, i
     }
 }
 
-template void ImagePainter::DrawTrustRegionOfGaussian<GrayImage, uint8_t>(GrayImage &image, const Vec2 &center, const Mat2 &covariance, const uint8_t &color,
-                                                                          const float sigma_scale);
-template void ImagePainter::DrawTrustRegionOfGaussian<RgbImage, RgbPixel>(RgbImage &image, const Vec2 &center, const Mat2 &covariance, const RgbPixel &color,
-                                                                          const float sigma_scale);
+template void ImagePainter::DrawTrustRegionOfGaussian<GrayImage, uint8_t>(GrayImage &image, int32_t center_x, int32_t center_y, const Mat2 &covariance,
+                                                                          const uint8_t &color, const float sigma_scale);
+template void ImagePainter::DrawTrustRegionOfGaussian<RgbImage, RgbPixel>(RgbImage &image, int32_t center_x, int32_t center_y, const Mat2 &covariance,
+                                                                          const RgbPixel &color, const float sigma_scale);
 template <typename ImageType, typename PixelType>
-void ImagePainter::DrawTrustRegionOfGaussian(ImageType &image, const Vec2 &center, const Mat2 &covariance, const PixelType &color, const float sigma_scale) {
+void ImagePainter::DrawTrustRegionOfGaussian(ImageType &image, int32_t center_x, int32_t center_y, const Mat2 &covariance, const PixelType &color,
+                                             const float sigma_scale) {
     // Decompose covariance matrix.
     const Eigen::SelfAdjointEigenSolver<Mat2> saes(covariance);
     const Vec2 &eigen_values = saes.eigenvalues();
@@ -274,8 +275,8 @@ void ImagePainter::DrawTrustRegionOfGaussian(ImageType &image, const Vec2 &cente
     for (float angle = 0.0f; angle < 6.28f; angle += step) {
         const float cos_angle = std::cos(angle);
         const float sin_angle = std::sin(angle);
-        const float x = center.x() + b * cos_angle * cos_theta - a * sin_angle * sin_theta;
-        const float y = center.y() + b * cos_angle * sin_theta + a * sin_angle * cos_theta;
+        const float x = static_cast<float>(center_x) + b * cos_angle * cos_theta - a * sin_angle * sin_theta;
+        const float y = static_cast<float>(center_y) + b * cos_angle * sin_theta + a * sin_angle * cos_theta;
 
         const int32_t int_x = static_cast<int32_t>(x);
         const int32_t int_y = static_cast<int32_t>(y);

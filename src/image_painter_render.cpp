@@ -19,7 +19,7 @@ namespace {
         }
         return Vec2(p_c.x() / p_c.z() * cam.fx + cam.cx, p_c.y() / p_c.z() * cam.fy + cam.cy);
     }
-}
+}  // namespace
 
 template void ImagePainter::RenderTextInCameraView<GrayImage, uint8_t>(GrayImage &image, const CameraView &cam, const Vec3 &p_w, const std::string &str,
                                                                        const uint8_t color, const int32_t font_size);
@@ -118,7 +118,7 @@ void ImagePainter::RenderEllipseInCameraView(ImageType &image, const CameraView 
         // the covariance, scaled by the constant pixels-per-world-unit factor.
         const Vec2 pixel_uv = Vec2(p_c.x() * cam.ortho_scale + cam.cx, p_c.y() * cam.ortho_scale + cam.cy);
         const Mat2 pixel_cov = cov_c.block<2, 2>(0, 0) * (cam.ortho_scale * cam.ortho_scale);
-        DrawTrustRegionOfGaussian(image, pixel_uv, pixel_cov, color);
+        DrawTrustRegionOfGaussian(image, static_cast<int32_t>(pixel_uv.x()), static_cast<int32_t>(pixel_uv.y()), pixel_cov, color);
         return;
     }
 
@@ -137,7 +137,7 @@ void ImagePainter::RenderEllipseInCameraView(ImageType &image, const CameraView 
     const Vec2 pixel_uv = p_c.head<2>() * inv_depth * focus + Vec2(cam.cx, cam.cy);
 
     // Draw boundary of 2d gaussian ellipse.
-    DrawTrustRegionOfGaussian(image, pixel_uv, pixel_cov, color);
+    DrawTrustRegionOfGaussian(image, static_cast<int32_t>(pixel_uv.x()), static_cast<int32_t>(pixel_uv.y()), pixel_cov, color);
 }
 
 }  // namespace image_painter
